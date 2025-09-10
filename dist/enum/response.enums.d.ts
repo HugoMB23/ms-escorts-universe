@@ -1,0 +1,38 @@
+export declare enum ResponseStatus {
+    SUCCESS = 201,
+    NO_CONTEXT = 204,
+    BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
+    EXPIRED_TOKEN = 402,
+    FORBIDDEN = 403,
+    NOT_FOUND = 404,
+    CONFLICT = 409,
+    INTERNAL_SERVER_ERROR = 500
+}
+export declare enum ResponseMessage {
+    ACCOUNT_CREATED = "Cuenta creada con \u00E9xito",
+    EMAIL_ALREADY_REGISTERED = "Email ya registrado",
+    INVALID_CREDENTIALS = "Credenciales inv\u00E1lidas",
+    LOGIN_SUCCESS = "Inicio de sesi\u00F3n exitoso",
+    TOKEN_VALID = "Token v\u00E1lido",
+    TOKEN_INVALID = "Token inv\u00E1lido",
+    PHOTOS_UPLOADED = "Fotos subidas con \u00E9xito",
+    PHOTO_UPDATED = "Foto actualizada con \u00E9xito",
+    PHOTO_DELETED = "Foto eliminada con \u00E9xito",
+    AVATAR_UPDATED = "Avatar actualizado con \u00E9xito",
+    PROFILE_CREATED = "Perfil creado con \u00E9xito",
+    PROFILE_FOUND = "Perfil encontrado",
+    REDIS_KEY_FOUND = "Clave Redis encontrada",
+    REDIS_KEY_NOT_FOUND = "Clave Redis no encontrada",
+    REDIS_KEY_UPDATED = "Clave Redis actualizada",
+    HISTORY_UPDATED = "Historia subida con \u00E9xito",
+    VIDEO_UPLOADED = "Video subidas con \u00E9xito",
+    VIDEO_DELETED = "Video eliminada con \u00E9xito",
+    TOKEN_CADUCADO = "Token Caducado",
+    COVER_UPDATED = "Cover actualizado con \u00E9xito ",
+    EMAIL_NOT_FOUND = "Email no encontrado",
+    INVALID_OR_EXPIRED_TOKEN = "Token inv\u00E1lido o caducado",
+    PASSWORD_RESET_SUCCESS = "Contrase\u00F1a restablecida con \u00E9xito",
+    RESET_PASSWORD_EMAIL_SENT = "Se ha enviado un correo electr\u00F3nico con instrucciones para restablecer tu contrase\u00F1a. Por favor, revisa tu bandeja de entrada.",
+    PROFILE_UPDATED = "Profile actualizado"
+}
