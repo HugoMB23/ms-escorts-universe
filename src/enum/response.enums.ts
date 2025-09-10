@@ -1,0 +1,40 @@
+// enum/response.enums.ts
+export enum ResponseStatus {
+  SUCCESS = 201,
+  NO_CONTEXT = 204,
+  BAD_REQUEST = 400,
+  UNAUTHORIZED = 401,
+  EXPIRED_TOKEN = 402,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  CONFLICT = 409,
+  INTERNAL_SERVER_ERROR = 500,
+}
+
+export enum ResponseMessage {
+  ACCOUNT_CREATED = 'Cuenta creada con éxito',
+  EMAIL_ALREADY_REGISTERED = 'Email ya registrado',
+  INVALID_CREDENTIALS = 'Credenciales inválidas',
+  LOGIN_SUCCESS = 'Inicio de sesión exitoso',
+  TOKEN_VALID = 'Token válido',
+  TOKEN_INVALID = 'Token inválido',
+  PHOTOS_UPLOADED = 'Fotos subidas con éxito',
+  PHOTO_UPDATED = 'Foto actualizada con éxito',
+  PHOTO_DELETED = 'Foto eliminada con éxito',
+  AVATAR_UPDATED = 'Avatar actualizado con éxito',
+  PROFILE_CREATED = 'Perfil creado con éxito',
+  PROFILE_FOUND = 'Perfil encontrado',
+  REDIS_KEY_FOUND = 'Clave Redis encontrada',
+  REDIS_KEY_NOT_FOUND = 'Clave Redis no encontrada',
+  REDIS_KEY_UPDATED = 'Clave Redis actualizada',
+  HISTORY_UPDATED = 'Historia subida con éxito',
+  VIDEO_UPLOADED = 'Video subidas con éxito',
+  VIDEO_DELETED = 'Video eliminada con éxito',
+  TOKEN_CADUCADO = 'Token Caducado',
+  COVER_UPDATED = 'Cover actualizado con éxito ',
+  EMAIL_NOT_FOUND = 'Email no encontrado',
+  INVALID_OR_EXPIRED_TOKEN = 'Token inválido o caducado',
+  PASSWORD_RESET_SUCCESS = 'Contraseña restablecida con éxito',
+  RESET_PASSWORD_EMAIL_SENT = 'Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña. Por favor, revisa tu bandeja de entrada.',
+  PROFILE_UPDATED = 'Profile actualizado'
+}
