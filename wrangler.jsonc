@@ -1,0 +1,6 @@
+{
+  "name": "mi-worker",
+  "account_id": "TU_ACCOUNT_ID",
+  "compatibility_date": "2025-09-10",
+  "assets": { "directory": "./dist" }
+}
