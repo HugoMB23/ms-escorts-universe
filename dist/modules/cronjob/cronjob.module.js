@@ -10,28 +10,14 @@ exports.CronjobModule = void 0;
 const common_1 = require("@nestjs/common");
 const schedule_1 = require("@nestjs/schedule");
 const config_1 = require("@nestjs/config");
-const ioredis_1 = require("ioredis");
+const redis_module_1 = require("../redis/redis.module");
 let CronjobModule = class CronjobModule {
 };
 exports.CronjobModule = CronjobModule;
 exports.CronjobModule = CronjobModule = __decorate([
     (0, common_1.Module)({
-        imports: [schedule_1.ScheduleModule.forRoot(), config_1.ConfigModule],
-        providers: [
-            {
-                provide: 'REDIS',
-                useFactory: (configService) => {
-                    const redisUrl = configService.get('REDIS_URL');
-                    const redisOptions = {
-                        tls: {
-                            rejectUnauthorized: false,
-                        },
-                    };
-                    return new ioredis_1.default(redisUrl, redisOptions);
-                },
-                inject: [config_1.ConfigService],
-            },
-        ],
+        imports: [schedule_1.ScheduleModule.forRoot(), config_1.ConfigModule, redis_module_1.RedisModule],
+        providers: [],
     })
 ], CronjobModule);
 //# sourceMappingURL=cronjob.module.js.map

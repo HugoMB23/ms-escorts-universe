@@ -23,19 +23,27 @@ import { MailModule } from './modules/mail/mail.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.registerAsync({
-      imports: [ConfigModule],
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => ({
-        store: await redisStore({
-          url: configService.get<string>('REDIS_URL'),
-          socket: {
-            tls: true,
-          },
-        }),
+  CacheModule.registerAsync({
+  imports: [ConfigModule],
+  isGlobal: true,
+  useFactory: async (config: ConfigService) => {
+    const url = config.get<string>('REDIS_URL')!;
+    const u = new URL(url);
+    const isTls = u.protocol === 'rediss:';
+
+    // LOG útil para validar en runtime
+    console.log('[CacheModule] URL:', url, '| TLS?', isTls, '| host:', u.hostname, '| port:', u.port);
+
+    return {
+      store: await redisStore({
+        url,
+        socket: isTls ? { tls: true, servername: u.hostname } : undefined, // <- CLAVE
       }),
-      inject: [ConfigService],
-    }),
+      // ttl: 60, // opcional
+    };
+  },
+  inject: [ConfigService],
+}),
     AuthModule,
     DatabaseModule,
     ProfileModule,

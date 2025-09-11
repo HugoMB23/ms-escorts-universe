@@ -38,14 +38,18 @@ exports.AppModule = AppModule = __decorate([
             cache_manager_1.CacheModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 isGlobal: true,
-                useFactory: async (configService) => ({
-                    store: await (0, cache_manager_redis_yet_1.redisStore)({
-                        url: configService.get('REDIS_URL'),
-                        socket: {
-                            tls: true,
-                        },
-                    }),
-                }),
+                useFactory: async (config) => {
+                    const url = config.get('REDIS_URL');
+                    const u = new URL(url);
+                    const isTls = u.protocol === 'rediss:';
+                    console.log('[CacheModule] URL:', url, '| TLS?', isTls, '| host:', u.hostname, '| port:', u.port);
+                    return {
+                        store: await (0, cache_manager_redis_yet_1.redisStore)({
+                            url,
+                            socket: isTls ? { tls: true, servername: u.hostname } : undefined,
+                        }),
+                    };
+                },
                 inject: [config_1.ConfigService],
             }),
             auth_module_1.AuthModule,

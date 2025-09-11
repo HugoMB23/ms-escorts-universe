@@ -24,20 +24,22 @@ exports.RedisModule = RedisModule = __decorate([
             jwt_service_1.JwtService,
             {
                 provide: 'REDIS',
-                useFactory: (configService) => {
-                    const redisUrl = configService.get('REDIS_URL');
-                    const redis = new ioredis_1.default(redisUrl, {
-                        tls: redisUrl.startsWith('rediss://') ? {} : undefined,
+                useFactory: (config) => {
+                    const url = config.get('REDIS_URL');
+                    const u = new URL(url);
+                    const isTls = u.protocol === 'rediss:';
+                    console.log('[ioredis] URL:', url, '| TLS?', isTls, '| host:', u.hostname, '| port:', u.port);
+                    const client = new ioredis_1.default(url, isTls ? {
+                        tls: { servername: u.hostname },
+                        maxRetriesPerRequest: 5,
+                        connectTimeout: 5000,
+                    } : {
                         maxRetriesPerRequest: 5,
                         connectTimeout: 5000,
                     });
-                    redis.on('connect', () => {
-                        console.log('[ioredis] Connected to Redis');
-                    });
-                    redis.on('error', (err) => {
-                        console.error('[ioredis] Redis error:', err.message);
-                    });
-                    return redis;
+                    client.on('connect', () => console.log('[ioredis] Connected to Redis'));
+                    client.on('error', (e) => console.error('[ioredis] Redis error:', e?.message));
+                    return client;
                 },
                 inject: [config_1.ConfigService],
             },
