@@ -4,9 +4,15 @@ import { RedisController } from './redis.controller';
 import { JwtService } from '../jwt/jwt.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PlansConfigEntity } from '../../common/entity/plans.config.entity';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule,
+     TypeOrmModule.forFeature([
+          PlansConfigEntity
+        ]),
+  ],
   providers: [
     RedisService,
     JwtService,

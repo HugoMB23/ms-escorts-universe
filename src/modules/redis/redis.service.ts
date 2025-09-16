@@ -3,12 +3,17 @@ import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { ServiceResponse } from '../../interfaces/response.interface';
 import { ResponseMessage, ResponseStatus } from '../../enum/response.enums';
+import { PlansConfigEntity } from '../../common/entity/plans.config.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import Redis from 'ioredis';
 
 @Injectable()
 export class RedisService {
   constructor(
+    @InjectRepository(PlansConfigEntity)
+    private plansRepository: Repository<PlansConfigEntity>,
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @Inject('REDIS') private readonly redis: Redis
 ) {}
@@ -36,6 +41,33 @@ export class RedisService {
         },
         statusCode: ResponseStatus.NOT_FOUND,
         message: ResponseMessage.REDIS_KEY_NOT_FOUND,
+      };
+    }
+  }
+  async getPlans(): Promise<any> {
+    const key = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+    const cachedplans = await this.cacheManager.get(key);
+
+    if (cachedplans) {
+      console.log('planes obtenido dede redis', key)
+      return cachedplans
+    } else {
+      const [latest] = await this.plansRepository.find({
+        order: { id: 'DESC' },
+        take: 1,
+      });
+
+      if (latest) {
+        console.log('planes obtendio desde postgresql')
+        await this.cacheManager.set(key, latest.plans);
+        console.log('key set redis',key)
+        return latest.plans
+      }
+
+      return {
+        statusCode: ResponseStatus.NOT_FOUND,
+        message: 'No se encontraron planes en Redis ni en la base de datos',
+        data: null,
       };
     }
   }

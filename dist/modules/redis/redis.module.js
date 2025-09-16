@@ -13,12 +13,18 @@ const redis_controller_1 = require("./redis.controller");
 const jwt_service_1 = require("../jwt/jwt.service");
 const config_1 = require("@nestjs/config");
 const ioredis_1 = require("ioredis");
+const typeorm_1 = require("@nestjs/typeorm");
+const plans_config_entity_1 = require("../../common/entity/plans.config.entity");
 let RedisModule = class RedisModule {
 };
 exports.RedisModule = RedisModule;
 exports.RedisModule = RedisModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule],
+        imports: [config_1.ConfigModule,
+            typeorm_1.TypeOrmModule.forFeature([
+                plans_config_entity_1.PlansConfigEntity
+            ]),
+        ],
         providers: [
             redis_service_1.RedisService,
             jwt_service_1.JwtService,

@@ -7,5 +7,6 @@ export declare class RedisController {
     constructor(redisService: RedisService, jwtService: JwtService);
     getValue(req: Request): Promise<import("../../interfaces/response.interface").ServiceResponse<any>>;
     updateOrders(data: UpdateProfileDto, req: Request): Promise<import("../../interfaces/response.interface").ServiceResponse<void>>;
+    getPlans(): Promise<any>;
     getAllKeys(): Promise<import("../../interfaces/response.interface").ServiceResponse<any>>;
 }

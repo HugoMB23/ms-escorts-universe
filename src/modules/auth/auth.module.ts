@@ -16,6 +16,7 @@ import { ApiKeyMiddleware } from '../../middlewares/api-key.middleware';
 import { MailService } from '../mail/mail.service';
 
 
+
 @Module({
  
   imports: [
@@ -24,7 +25,8 @@ import { MailService } from '../mail/mail.service';
       UserPlanEntity,
       PlanEntity,
       PlanCategoryEntity,
-      ProfileEntity
+      ProfileEntity,
+
       
     ]),
     JwtModule.register({

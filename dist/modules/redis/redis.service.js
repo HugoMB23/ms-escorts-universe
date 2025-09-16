@@ -16,9 +16,13 @@ exports.RedisService = void 0;
 const cache_manager_1 = require("@nestjs/cache-manager");
 const common_1 = require("@nestjs/common");
 const response_enums_1 = require("../../enum/response.enums");
+const plans_config_entity_1 = require("../../common/entity/plans.config.entity");
+const typeorm_1 = require("typeorm");
+const typeorm_2 = require("@nestjs/typeorm");
 const ioredis_1 = require("ioredis");
 let RedisService = class RedisService {
-    constructor(cacheManager, redis) {
+    constructor(plansRepository, cacheManager, redis) {
+        this.plansRepository = plansRepository;
         this.cacheManager = cacheManager;
         this.redis = redis;
     }
@@ -43,6 +47,31 @@ let RedisService = class RedisService {
                 },
                 statusCode: response_enums_1.ResponseStatus.NOT_FOUND,
                 message: response_enums_1.ResponseMessage.REDIS_KEY_NOT_FOUND,
+            };
+        }
+    }
+    async getPlans() {
+        const key = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+        const cachedplans = await this.cacheManager.get(key);
+        if (cachedplans) {
+            console.log('planes obtenido dede redis', key);
+            return cachedplans;
+        }
+        else {
+            const [latest] = await this.plansRepository.find({
+                order: { id: 'DESC' },
+                take: 1,
+            });
+            if (latest) {
+                console.log('planes obtendio desde postgresql');
+                await this.cacheManager.set(key, latest.plans);
+                console.log('key set redis', key);
+                return latest.plans;
+            }
+            return {
+                statusCode: response_enums_1.ResponseStatus.NOT_FOUND,
+                message: 'No se encontraron planes en Redis ni en la base de datos',
+                data: null,
             };
         }
     }
@@ -116,8 +145,9 @@ let RedisService = class RedisService {
 exports.RedisService = RedisService;
 exports.RedisService = RedisService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
-    __param(1, (0, common_1.Inject)('REDIS')),
-    __metadata("design:paramtypes", [Object, ioredis_1.default])
+    __param(0, (0, typeorm_2.InjectRepository)(plans_config_entity_1.PlansConfigEntity)),
+    __param(1, (0, common_1.Inject)(cache_manager_1.CACHE_MANAGER)),
+    __param(2, (0, common_1.Inject)('REDIS')),
+    __metadata("design:paramtypes", [typeorm_1.Repository, Object, ioredis_1.default])
 ], RedisService);
 //# sourceMappingURL=redis.service.js.map

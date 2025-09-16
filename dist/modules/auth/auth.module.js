@@ -39,7 +39,7 @@ exports.AuthModule = AuthModule = __decorate([
                 userPlan_entity_1.UserPlanEntity,
                 plan_entity_1.PlanEntity,
                 planCategory_entity_1.PlanCategoryEntity,
-                profile_entity_1.ProfileEntity
+                profile_entity_1.ProfileEntity,
             ]),
             jwt_1.JwtModule.register({
                 global: true,

@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Param, Post, Put, Req, UnauthorizedException, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Req, UnauthorizedException, UseFilters, UseGuards } from '@nestjs/common';
 import { RedisService } from './redis.service';
 import { UpdateProfileDto } from '../../common/dto/redis-updateOrder.dto';
 import { JwtService } from '../../modules/jwt/jwt.service';
 import { JwtExceptionFilter } from '../../common/filters/jwt-exception.filter';
-
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 @Controller('redis')
 @UseFilters(JwtExceptionFilter)
 export class RedisController {
@@ -34,6 +34,11 @@ export class RedisController {
     }
 
     return this.redisService.updateValueRedis(uuid, nick, data);
+  }
+  @Get('plans')
+  @UseGuards(JwtAuthGuard)
+  async getPlans (){
+   return this.redisService.getPlans()
   }
 
   @Get('all')

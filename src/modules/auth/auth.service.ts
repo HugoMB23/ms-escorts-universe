@@ -78,7 +78,7 @@ export class AuthService {
       }
 
       const userPlan = user.userPlans.length > 0 ? user.userPlans[0] : null;
-
+      console.log('data plan',user)
       const payload = {
         sub: user.uuid,
         username: user.nick,
