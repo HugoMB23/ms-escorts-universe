@@ -18,7 +18,6 @@ const redis_service_1 = require("./redis.service");
 const redis_updateOrder_dto_1 = require("../../common/dto/redis-updateOrder.dto");
 const jwt_service_1 = require("../../modules/jwt/jwt.service");
 const jwt_exception_filter_1 = require("../../common/filters/jwt-exception.filter");
-const jwt_auth_guard_1 = require("../../guards/jwt-auth.guard");
 let RedisController = class RedisController {
     constructor(redisService, jwtService) {
         this.redisService = redisService;
@@ -65,7 +64,6 @@ __decorate([
 ], RedisController.prototype, "updateOrders", null);
 __decorate([
     (0, common_1.Get)('plans'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

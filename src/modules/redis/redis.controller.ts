@@ -36,7 +36,6 @@ export class RedisController {
     return this.redisService.updateValueRedis(uuid, nick, data);
   }
   @Get('plans')
-  @UseGuards(JwtAuthGuard)
   async getPlans (){
    return this.redisService.getPlans()
   }
