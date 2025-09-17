@@ -18,6 +18,7 @@ const blob_1 = require("@vercel/blob");
 const cache_manager_1 = require("@nestjs/cache-manager");
 const response_enums_1 = require("../../enum/response.enums");
 const luxon_1 = require("luxon");
+const plan_limits_util_1 = require("../../utils/plan-limits.util");
 let HistoryService = class HistoryService {
     constructor(cacheManager) {
         this.cacheManager = cacheManager;
@@ -31,8 +32,8 @@ let HistoryService = class HistoryService {
         }
         const nickUrl = `${uuid}_${nick}`;
         let currentData = await this.getDataRedis(nickUrl);
-        const plansUniverseKey = 'plansUniverse';
-        const plansUniverse = await this.cacheManager.get(plansUniverseKey);
+        const key_plans = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+        const plansUniverse = await this.cacheManager.get(key_plans);
         if (!currentData) {
             currentData = {
                 avatar: '',
@@ -42,12 +43,8 @@ let HistoryService = class HistoryService {
                 photos: [],
             };
         }
-        const currentPlan = plansUniverse.plansScort.find(p => p.namePlan === plan);
-        if (!currentPlan) {
-            throw new common_1.HttpException({ status: response_enums_1.ResponseStatus.NOT_FOUND, error: 'Plan not found' }, response_enums_1.ResponseStatus.NOT_FOUND);
-        }
+        const { maxAllowed: maxHistoriesAllowed, resolvedPlanId } = (0, plan_limits_util_1.resolveMediaLimit)(plansUniverse, plan, 'history');
         const currentHistoryCount = currentData.histories.length;
-        const maxHistoriesAllowed = currentPlan.maximoHistory;
         if (currentHistoryCount >= maxHistoriesAllowed) {
             currentData.histories.shift();
         }

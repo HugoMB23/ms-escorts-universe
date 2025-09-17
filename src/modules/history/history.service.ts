@@ -4,6 +4,7 @@ import { del, put } from '@vercel/blob';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ResponseMessage, ResponseStatus } from '../../enum/response.enums';
 import { DateTime } from 'luxon';
+import { resolveMediaLimit } from '../../utils/plan-limits.util';
 
 @Injectable()
 export class HistoryService {
@@ -22,8 +23,8 @@ export class HistoryService {
 
     const nickUrl = `${uuid}_${nick}`;
     let currentData = await this.getDataRedis(nickUrl);
-    const plansUniverseKey = 'plansUniverse';
-    const plansUniverse: any = await this.cacheManager.get(plansUniverseKey);
+    const key_plans = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+    const plansUniverse: any = await this.cacheManager.get(key_plans);
 
     if (!currentData) {
       currentData = {
@@ -34,17 +35,10 @@ export class HistoryService {
         photos: [],
       };
     }
+    const { maxAllowed: maxHistoriesAllowed, resolvedPlanId } = resolveMediaLimit(plansUniverse,plan,'history',);
 
-    const currentPlan = plansUniverse.plansScort.find(p => p.namePlan === plan);
-    if (!currentPlan) {
-      throw new HttpException(
-        { status: ResponseStatus.NOT_FOUND, error: 'Plan not found' },
-        ResponseStatus.NOT_FOUND,
-      );
-    }
 
     const currentHistoryCount = currentData.histories.length;
-    const maxHistoriesAllowed = currentPlan.maximoHistory;
 
     if (currentHistoryCount >= maxHistoriesAllowed) {
       // Eliminar la primera historia (la más antigua)

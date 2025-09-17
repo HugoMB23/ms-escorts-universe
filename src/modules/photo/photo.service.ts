@@ -5,6 +5,8 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { UpdatePhotoHighlightedDto } from '../../common/dto/profile-path.dto';
 import { ResponseMessage, ResponseStatus } from '../../enum/response.enums';
 import { PhotoState } from '../../enum/photoState.enum';
+import { resolveMediaLimit } from '../../utils/plan-limits.util';
+
 @Injectable()
 export class PhotosService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
@@ -29,8 +31,8 @@ export class PhotosService {
 
     const nickUrl = `${uuid}_${nick}`;
     let currentData = await this.getDataRedis(nickUrl);
-    const plansUniverseKey = 'plansUniverse';
-    const plansUniverse: any = await this.cacheManager.get(plansUniverseKey);
+    const key_plans = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+    const plansUniverse: any = await this.cacheManager.get(key_plans);
 
     if (!currentData) {
       currentData = {
@@ -41,26 +43,16 @@ export class PhotosService {
         photos: [],
       };
     }
-
-    const currentPlan = plansUniverse.plansScort.find(
-      (p) => p.namePlan === plan,
-    );
-    if (!currentPlan) {
-      throw new HttpException(
-        { status: ResponseStatus.NOT_FOUND, error: 'Plan not found' },
-        ResponseStatus.NOT_FOUND,
-      );
-    }
+    const { maxAllowed: maxPhotosAllowed, resolvedPlanId } = resolveMediaLimit(plansUniverse, plan,'photos');
+    console.log('response maximo',maxPhotosAllowed)
 
     const currentPhotoCount = currentData.photos.length;
-    console.log('currentPhotoCount',currentPhotoCount)
-    const maxPhotosAllowed = currentPlan.maximoPhoto;
 
     if (currentPhotoCount + files.length > maxPhotosAllowed) {
       throw new HttpException(
         {
           status: ResponseStatus.BAD_REQUEST,
-          error: `Cannot upload photos. The plan ${plan} allows a maximum of ${maxPhotosAllowed} photos.`,
+          error: `Cannot upload photos. The plan ${resolvedPlanId} allows a maximum of ${maxPhotosAllowed} photos.`,
         },
         ResponseStatus.BAD_REQUEST,
       );

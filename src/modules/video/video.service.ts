@@ -3,7 +3,7 @@ import { Inject, Injectable, HttpException } from '@nestjs/common';
 import { put, del } from '@vercel/blob';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ResponseMessage, ResponseStatus } from '../../enum/response.enums';
-
+import { resolveMediaLimit } from '../../utils/plan-limits.util';
 @Injectable()
 export class VideoService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
@@ -26,8 +26,8 @@ export class VideoService {
 
     const nickUrl = `${uuid}_${nick}`;
     let currentData = await this.getDataRedis(nickUrl);
-    const plansUniverseKey = 'plansUniverse';
-    const plansUniverse: any = await this.cacheManager.get(plansUniverseKey);
+    const key_plans = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+    const plansUniverse: any = await this.cacheManager.get(key_plans);
 
     if (!currentData) {
       currentData = {
@@ -38,25 +38,17 @@ export class VideoService {
         photos: [],
       };
     }
-
-    const currentPlan = plansUniverse.plansScort.find(
-      (p) => p.namePlan === plan,
-    );
-    if (!currentPlan) {
-      throw new HttpException(
-        { status: ResponseStatus.NOT_FOUND, error: 'Plan not found' },
-        ResponseStatus.NOT_FOUND,
-      );
-    }
+    
+    
+    const { maxAllowed: maxVideosAllowed, resolvedPlanId } = resolveMediaLimit(plansUniverse,plan,'videos');
 
     const currentVideoCount = currentData.videos.length;
-    const maxVideosAllowed = currentPlan.maximoVideo;
 
     if (currentVideoCount >= maxVideosAllowed) {
       throw new HttpException(
         {
           status: ResponseStatus.BAD_REQUEST,
-          error: `Cannot upload video. The plan ${plan} allows a maximum of ${maxVideosAllowed} videos.`,
+          error: `Cannot upload video. The plan ${resolvedPlanId} allows a maximum of ${maxVideosAllowed} videos.`,
         },
         ResponseStatus.BAD_REQUEST,
       );

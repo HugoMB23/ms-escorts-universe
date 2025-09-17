@@ -18,6 +18,7 @@ const blob_1 = require("@vercel/blob");
 const cache_manager_1 = require("@nestjs/cache-manager");
 const response_enums_1 = require("../../enum/response.enums");
 const photoState_enum_1 = require("../../enum/photoState.enum");
+const plan_limits_util_1 = require("../../utils/plan-limits.util");
 let PhotosService = class PhotosService {
     constructor(cacheManager) {
         this.cacheManager = cacheManager;
@@ -33,8 +34,8 @@ let PhotosService = class PhotosService {
         }
         const nickUrl = `${uuid}_${nick}`;
         let currentData = await this.getDataRedis(nickUrl);
-        const plansUniverseKey = 'plansUniverse';
-        const plansUniverse = await this.cacheManager.get(plansUniverseKey);
+        const key_plans = process.env.KEY_REDIS_PLANS || 'plansUniverse';
+        const plansUniverse = await this.cacheManager.get(key_plans);
         if (!currentData) {
             currentData = {
                 avatar: '',
@@ -44,17 +45,13 @@ let PhotosService = class PhotosService {
                 photos: [],
             };
         }
-        const currentPlan = plansUniverse.plansScort.find((p) => p.namePlan === plan);
-        if (!currentPlan) {
-            throw new common_1.HttpException({ status: response_enums_1.ResponseStatus.NOT_FOUND, error: 'Plan not found' }, response_enums_1.ResponseStatus.NOT_FOUND);
-        }
+        const { maxAllowed: maxPhotosAllowed, resolvedPlanId } = (0, plan_limits_util_1.resolveMediaLimit)(plansUniverse, plan, 'photos');
+        console.log('response maximo', maxPhotosAllowed);
         const currentPhotoCount = currentData.photos.length;
-        console.log('currentPhotoCount', currentPhotoCount);
-        const maxPhotosAllowed = currentPlan.maximoPhoto;
         if (currentPhotoCount + files.length > maxPhotosAllowed) {
             throw new common_1.HttpException({
                 status: response_enums_1.ResponseStatus.BAD_REQUEST,
-                error: `Cannot upload photos. The plan ${plan} allows a maximum of ${maxPhotosAllowed} photos.`,
+                error: `Cannot upload photos. The plan ${resolvedPlanId} allows a maximum of ${maxPhotosAllowed} photos.`,
             }, response_enums_1.ResponseStatus.BAD_REQUEST);
         }
         console.log('log reduce', currentData);
