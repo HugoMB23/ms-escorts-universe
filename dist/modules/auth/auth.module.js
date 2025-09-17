@@ -44,7 +44,7 @@ exports.AuthModule = AuthModule = __decorate([
             jwt_1.JwtModule.register({
                 global: true,
                 secret: constants_1.jwtConstants.secretUser,
-                signOptions: { expiresIn: '30m' },
+                signOptions: { expiresIn: process.env.TIME_TOKEN_USER ? String(process.env.TIME_TOKEN_USER + 'min') : '30min' },
             }),
             throttler_1.ThrottlerModule.forRoot([{
                     ttl: 10,

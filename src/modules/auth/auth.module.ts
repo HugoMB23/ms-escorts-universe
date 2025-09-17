@@ -32,7 +32,7 @@ import { MailService } from '../mail/mail.service';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secretUser,
-      signOptions: { expiresIn: '30m' },
+      signOptions: { expiresIn: process.env.TIME_TOKEN_USER ? String(process.env.TIME_TOKEN_USER+'min') : '30min'},
     }),
     ThrottlerModule.forRoot([{
       ttl: 10,
