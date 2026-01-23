@@ -4,6 +4,7 @@ import { LoginUserDto } from '../../common/dto/auth-login.dto';
 import { TokenUserDto } from '../../common/dto/auth-token.dto';
 import { ConfirmPasswordResetDto } from './dto/confirmPassword.dto';
 import { ResetPasswordDto } from './dto/resetPass.dto';
+import { RegisterDto } from './dto/registerPublic.dto';
 export declare class AuthController {
     private readonly authSerivice;
     constructor(authSerivice: AuthService);
@@ -31,6 +32,22 @@ export declare class AuthController {
         data: any;
     }>;
     createAccount(createUser: CreateUserDto): Promise<any>;
+    register(registerDto: RegisterDto, files: {
+        photos?: Express.Multer.File[];
+        photoProfile?: Express.Multer.File[];
+        photoPayment?: Express.Multer.File[];
+    }): Promise<{
+        data: {};
+        statusCode: import("../../enum/response.enums").ResponseStatus;
+        message: import("../../enum/response.enums").ResponseMessage;
+    }>;
+    registerPublicV1(bodyRaw: any, files: {
+        [fieldname: string]: Express.Multer.File[];
+    }): Promise<{
+        data: {};
+        statusCode: import("../../enum/response.enums").ResponseStatus;
+        message: import("../../enum/response.enums").ResponseMessage;
+    }>;
     resetPassword(data: ResetPasswordDto): Promise<{
         statusCode: import("../../enum/response.enums").ResponseStatus;
         message: import("../../enum/response.enums").ResponseMessage;

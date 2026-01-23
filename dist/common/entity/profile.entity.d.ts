@@ -11,14 +11,17 @@ export declare class ProfileEntity {
     bust: string;
     hips: string;
     bodyType: string;
-    depilation: string;
-    tattoos: string;
-    piercings: string;
-    smoker: string;
-    drinker: string;
+    depilation: boolean;
+    tattoos: boolean;
+    piercings: boolean;
+    smoker: boolean;
+    drinker: boolean;
     languages: string;
     eyeColor: string;
     hairColor: string;
     listService: any;
+    parking: boolean;
+    startDate: string;
+    endDate: string;
     user: UserEntity;
 }

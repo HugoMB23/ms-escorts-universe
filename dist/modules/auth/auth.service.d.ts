@@ -1,20 +1,39 @@
-import { CreateUserDto } from '../../common/dto/auth-create.dto';
+import { CreateUserDto, CreateProfilPublicDto } from '../../common/dto/auth-create.dto';
 import { UserEntity } from '../../common/entity/user.entity';
 import { Repository } from 'typeorm';
 import { LoginUserDto } from '../../common/dto/auth-login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ResponseMessage, ResponseStatus } from '../../enum/response.enums';
 import { MailService } from '../mail/mail.service';
+import { ProfileEntity } from '../../common/entity/profile.entity';
+import { CreateProfileDto } from '../../common/dto/profile-create.dto';
+import { RegisterPublicV1Dto } from './dto/registerPublicV1.dto';
+import { RegistrationDocsService } from '../registration-docs/registration-docs.service';
 export declare class AuthService {
     private userRepository;
+    private readonly profileRepository;
     private jwtService;
     private mailerService;
-    constructor(userRepository: Repository<UserEntity>, jwtService: JwtService, mailerService: MailService);
+    private registrationDocsService;
+    constructor(userRepository: Repository<UserEntity>, profileRepository: Repository<ProfileEntity>, jwtService: JwtService, mailerService: MailService, registrationDocsService: RegistrationDocsService);
     createAccountUser(userData: CreateUserDto): Promise<{
         data: {};
         statusCode: ResponseStatus;
         message: ResponseMessage;
     }>;
+    createAccountUserPublicv1(userPublicData: RegisterPublicV1Dto, files?: {
+        [fieldname: string]: Express.Multer.File[];
+    }): Promise<{
+        data: {};
+        statusCode: ResponseStatus;
+        message: ResponseMessage;
+    }>;
+    createAccountUserPublic(userPublicData: CreateProfilPublicDto): Promise<{
+        data: {};
+        statusCode: ResponseStatus;
+        message: ResponseMessage;
+    }>;
+    createRegisterUser(createProfileDto: CreateProfileDto): Promise<ProfileEntity>;
     loginUser(UserData: LoginUserDto): Promise<{
         access_token: string;
         statusCode: ResponseStatus;
@@ -26,7 +45,7 @@ export declare class AuthService {
         birthDate: string;
         resetToken: string;
         resetTokenExpiration: Date;
-        profile?: import("../../common/entity/profile.entity").ProfileEntity;
+        profile?: ProfileEntity;
         userPlans: import("../../common/entity/userPlan.entity").UserPlanEntity[];
     } | {
         access_token: string;
@@ -36,6 +55,7 @@ export declare class AuthService {
     encryPasswordUser(password: string): Promise<any>;
     decryptPassword(password: string, hash: string): Promise<any>;
     findUser(emailUser: string): Promise<any>;
+    calculateAge(birthDate: string): Promise<number>;
     validToken(token: string): Promise<{
         statusCode: ResponseStatus;
         message: ResponseMessage;

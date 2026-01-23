@@ -23,6 +23,7 @@ const planCategory_entity_1 = require("../../common/entity/planCategory.entity")
 const profile_entity_1 = require("../../common/entity/profile.entity");
 const api_key_middleware_1 = require("../../middlewares/api-key.middleware");
 const mail_service_1 = require("../mail/mail.service");
+const registration_docs_module_1 = require("../registration-docs/registration-docs.module");
 let AuthModule = class AuthModule {
     configure(consumer) {
         consumer
@@ -50,6 +51,7 @@ exports.AuthModule = AuthModule = __decorate([
                     ttl: 10,
                     limit: 2,
                 }]),
+            registration_docs_module_1.RegistrationDocsModule,
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, mail_service_1.MailService, {

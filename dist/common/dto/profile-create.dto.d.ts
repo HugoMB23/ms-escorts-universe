@@ -1,5 +1,4 @@
-export declare class CreateProfileDto {
-    userUuid: string;
+export declare class InformationProfileDto {
     age: number;
     description: string;
     nationality: string;
@@ -9,9 +8,20 @@ export declare class CreateProfileDto {
     bust: string;
     hips: string;
     bodyType: string;
-    depilation: string;
+    depilation: boolean;
     listService: any[];
-    idPlan: number;
-    startDate: Date;
-    endDate: Date;
+    tattoos: boolean;
+    piercings: boolean;
+    smoker: boolean;
+    drinker: boolean;
+    languages: string;
+    eyeColor: string;
+    hairColor: string;
+    parking: boolean;
+    startDate: string;
+    endDate: string;
+}
+export declare class CreateProfileDto {
+    userUuid: string;
+    informationProfile: InformationProfileDto;
 }

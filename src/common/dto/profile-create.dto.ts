@@ -1,10 +1,9 @@
-import { IsNotEmpty, IsString, IsNumber, IsArray, IsDateString, ValidateNested, ArrayNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsArray, IsDateString, ValidateNested, ArrayNotEmpty,IsBoolean } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class CreateProfileDto {
-  @IsNotEmpty()
-  @IsString()
-  userUuid: string;
 
+
+export class InformationProfileDto {
   @IsNotEmpty()
   @IsNumber()
   age: number;
@@ -42,8 +41,8 @@ export class CreateProfileDto {
   bodyType: string;
 
   @IsNotEmpty()
-  @IsString()
-  depilation: string;
+  @IsBoolean()
+  depilation: boolean;
 
   @IsArray()
   @ArrayNotEmpty()
@@ -51,14 +50,53 @@ export class CreateProfileDto {
   listService: any[];
 
   @IsNotEmpty()
-  @IsNumber()
-  idPlan: number;
+  @IsBoolean()
+  tattoos: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  piercings: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  smoker: boolean;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  drinker: boolean;
+
+  @IsNotEmpty()
+  @IsString()
+  languages: string;
+  
+  @IsNotEmpty()
+  @IsString()
+  eyeColor: string;
+
+  @IsNotEmpty()
+  @IsString()
+  hairColor: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  parking: boolean;
 
   @IsNotEmpty()
   @IsDateString()
-  startDate: Date;
+  startDate: string;
 
   @IsNotEmpty()
   @IsDateString()
-  endDate: Date;
+  endDate: string;
+}
+
+export class CreateProfileDto {
+  @IsNotEmpty()
+  @IsString()
+  userUuid: string;
+  
+  @IsNotEmpty()
+  @ValidateNested()
+  @Type(() => InformationProfileDto)
+  informationProfile: InformationProfileDto;
 }

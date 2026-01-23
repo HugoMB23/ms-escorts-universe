@@ -9,61 +9,70 @@ export class ProfileEntity {
   @Column()
   userUuid: string;
 
-  @Column()
+  @Column({ type: 'int' })
   age: number;
 
-  @Column()
+  @Column({ type: 'text' })
   description: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 100 })
   nationality: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   height: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   weight: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   waist: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   bust: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 20 })
   hips: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   bodyType: string;
 
-  @Column()
-  depilation: string;
+  @Column({ type: 'boolean', default: false })
+  depilation: boolean;
 
-  @Column()
-  tattoos: string;
+  @Column({ type: 'boolean', default: false })
+  tattoos: boolean;
 
-  @Column()
-  piercings: string;
+  @Column({ type: 'boolean', default: false })
+  piercings: boolean;
 
-  @Column()
-  smoker: string;
+  @Column({ type: 'boolean', default: false })
+  smoker: boolean;
 
-  @Column()
-  drinker: string;
+  @Column({ type: 'boolean', default: false })
+  drinker: boolean;
 
-  @Column()
+  @Column({ type: 'varchar', length: 150 })
   languages: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   eyeColor: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 50 })
   hairColor: string;
 
-  @Column('jsonb')
-  listService: any; // Considerar cambiar a un tipo más específico si es necesario
+  @Column({ type: 'jsonb' })
+  listService: any;
+
+  @Column({ type: 'boolean', default: false })
+  parking: boolean;
+  
+  @Column({ type: 'date' })
+  startDate: string;
+
+  @Column({ type: 'date' })
+  endDate: string;
 
   @OneToOne(() => UserEntity, (user) => user.profile)
-  @JoinColumn({ name: 'userUuid' })
-  user: UserEntity; // Relación OneToOne con UserEntity
+  @JoinColumn({ name: 'userUuid', referencedColumnName: 'uuid' })
+  user: UserEntity;
 }

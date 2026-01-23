@@ -24,80 +24,92 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "userUuid", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'int' }),
     __metadata("design:type", Number)
 ], ProfileEntity.prototype, "age", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'text' }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 100 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "nationality", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "height", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "weight", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "waist", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "bust", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 20 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "hips", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "bodyType", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
 ], ProfileEntity.prototype, "depilation", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
 ], ProfileEntity.prototype, "tattoos", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
 ], ProfileEntity.prototype, "piercings", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
 ], ProfileEntity.prototype, "smoker", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
 ], ProfileEntity.prototype, "drinker", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 150 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "languages", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "eyeColor", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ type: 'varchar', length: 50 }),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "hairColor", void 0);
 __decorate([
-    (0, typeorm_1.Column)('jsonb'),
+    (0, typeorm_1.Column)({ type: 'jsonb' }),
     __metadata("design:type", Object)
 ], ProfileEntity.prototype, "listService", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'boolean', default: false }),
+    __metadata("design:type", Boolean)
+], ProfileEntity.prototype, "parking", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date' }),
+    __metadata("design:type", String)
+], ProfileEntity.prototype, "startDate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'date' }),
+    __metadata("design:type", String)
+], ProfileEntity.prototype, "endDate", void 0);
+__decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.UserEntity, (user) => user.profile),
-    (0, typeorm_1.JoinColumn)({ name: 'userUuid' }),
+    (0, typeorm_1.JoinColumn)({ name: 'userUuid', referencedColumnName: 'uuid' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], ProfileEntity.prototype, "user", void 0);
 exports.ProfileEntity = ProfileEntity = __decorate([

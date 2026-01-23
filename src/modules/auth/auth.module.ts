@@ -14,6 +14,7 @@ import { PlanCategoryEntity } from 'src/common/entity/planCategory.entity';
 import { ProfileEntity } from 'src/common/entity/profile.entity';
 import { ApiKeyMiddleware } from '../../middlewares/api-key.middleware';
 import { MailService } from '../mail/mail.service';
+import { RegistrationDocsModule } from '../registration-docs/registration-docs.module';
 
 
 
@@ -38,6 +39,7 @@ import { MailService } from '../mail/mail.service';
       ttl: 10,
       limit: 2,
     }]),
+    RegistrationDocsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService,MailService,{
