@@ -118,8 +118,8 @@ export class RedisService {
       console.log('✅ Planes construidos dinámicamente desde BD');
 
       // Cachear en Redis para rendimiento (pero BD es la verdad)
-      await this.cacheManager.set(key, result, 3600000); // 1 hora
-      console.log(`✅ Cache actualizado para key: ${key}`);
+      // await this.cacheManager.set(key, result, 3600000); // 1 hora
+      // console.log(`✅ Cache actualizado para key: ${key}`);
 
       return result;
     } catch (error) {

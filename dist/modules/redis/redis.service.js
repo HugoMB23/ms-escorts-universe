@@ -101,8 +101,6 @@ let RedisService = class RedisService {
                 result.push(categoryObject);
             }
             console.log('✅ Planes construidos dinámicamente desde BD');
-            await this.cacheManager.set(key, result, 3600000);
-            console.log(`✅ Cache actualizado para key: ${key}`);
             return result;
         }
         catch (error) {
