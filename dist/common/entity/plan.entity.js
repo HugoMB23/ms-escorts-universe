@@ -33,6 +33,10 @@ __decorate([
     __metadata("design:type", Number)
 ], PlanEntity.prototype, "price", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ type: 'jsonb', nullable: true }),
+    __metadata("design:type", Object)
+], PlanEntity.prototype, "customPrice", void 0);
+__decorate([
     (0, typeorm_1.OneToMany)(() => userPlan_entity_1.UserPlanEntity, (userPlan) => userPlan.plan),
     __metadata("design:type", Array)
 ], PlanEntity.prototype, "userPlans", void 0);

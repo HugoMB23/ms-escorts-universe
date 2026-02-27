@@ -141,7 +141,7 @@ export class RedisService {
 
     console.log(`📋 Plan: "${plan.name}" | mediaLimit: ${photos}/${videos}/${history}`);
 
-    return {
+    const planObject: any = {
       id: planId,
       icon: this.getIconForPlan(plan.name),
       price: this.getDefaultPriceDetails(plan.name),
@@ -153,6 +153,13 @@ export class RedisService {
         history,
       },
     };
+
+    // Agregar customPrice si existe
+    if (plan.customPrice) {
+      planObject.customPrice = plan.customPrice;
+    }
+
+    return planObject;
   }
 
   /**

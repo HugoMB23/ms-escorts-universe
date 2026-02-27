@@ -16,15 +16,15 @@ export class PlanEntity {
   @Column({ type: 'numeric', nullable: true })
   price: number;
 
+  @Column({ type: 'jsonb', nullable: true })
+  customPrice: any; // Precios especiales por región
+
   // Estas columnas se agregarán ejecutando las queries SQL
   // @Column({ type: 'varchar', nullable: true })
   // icon: string;
   
   // @Column({ type: 'jsonb', nullable: true })
   // priceDetails: any;
-  
-  // @Column({ type: 'jsonb', nullable: true })
-  // customPrice: any;
   
   // @Column({ type: 'jsonb', nullable: true })
   // features: string[];

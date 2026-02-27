@@ -115,11 +115,12 @@ let RedisService = class RedisService {
     buildPlanObject(categorySlug, plan) {
         const planId = `${categorySlug}-${plan.name.toLowerCase()}`;
         const { photos, videos, history } = this.getMediaLimitForPlan(plan.name);
-        return {
+        console.log(`📋 Plan: "${plan.name}" | mediaLimit: ${photos}/${videos}/${history}`);
+        const planObject = {
             id: planId,
             icon: this.getIconForPlan(plan.name),
             price: this.getDefaultPriceDetails(plan.name),
-            title: plan.name,
+            title: this.formatPlanTitle(plan.name),
             features: this.getFeaturesForPlan(plan.name, { photos, videos, history }),
             mediaLimit: {
                 photos,
@@ -127,6 +128,18 @@ let RedisService = class RedisService {
                 history,
             },
         };
+        if (plan.customPrice) {
+            planObject.customPrice = plan.customPrice;
+        }
+        return planObject;
+    }
+    formatPlanTitle(planName) {
+        const titleMap = {
+            'nebulosa': 'Nebulosa',
+            'supernova': 'Supernova',
+            'big-bang': 'Big Bang',
+        };
+        return titleMap[planName.toLowerCase()] || planName;
     }
     getCategoryLabel(categoryName) {
         const labels = {
@@ -141,15 +154,15 @@ let RedisService = class RedisService {
     }
     getIconForPlan(planName) {
         const icons = {
-            'Nebulosa': 'plans/plan-diablo-bronce.svg',
-            'Supernova': 'plans/plan-diablo-silver.svg',
-            'Big Bang': 'plans/plan-diablo-gold.svg',
+            'nebulosa': 'plans/plan-diablo-bronce.svg',
+            'supernova': 'plans/plan-diablo-silver.svg',
+            'big-bang': 'plans/plan-diablo-gold.svg',
         };
-        return icons[planName] || 'plans/plan-default.svg';
+        return icons[planName.toLowerCase()] || 'plans/plan-default.svg';
     }
     getFeaturesForPlan(planName, mediaLimit) {
         const baseFeatures = {
-            'Nebulosa': [
+            'nebulosa': [
                 'Fotografía de portada de tamaño pequeño',
                 'Listado en 3er grupo de portada y categoría',
                 `Publicación de hasta {maxPhoto} fotografías en book`,
@@ -161,7 +174,7 @@ let RedisService = class RedisService {
                 'Acceso a plataforma de autoservicio 24hrs',
                 'Asistencia telefónica en horario de oficina',
             ],
-            'Supernova': [
+            'supernova': [
                 'Fotografía de portada de tamaño mediano',
                 'Listado en 2do grupo de portada y categoría',
                 `Publicación de hasta {maxPhoto} fotografías en book`,
@@ -173,12 +186,12 @@ let RedisService = class RedisService {
                 'Acceso a plataforma de autoservicio 24hrs',
                 'Asistencia telefónica en horario de oficina',
             ],
-            'Big Bang': [
+            'big-bang': [
                 'Fotografía de portada de tamaño grande',
                 'Listado en 1er grupo de portada y categoría',
                 `Publicación de hasta {maxPhoto} fotografías en book`,
                 `Carga de hasta {maxPhoto} fotos nuevas`,
-                `Publicación de {maxVideo} video en book`,
+                `Publicación de {maxVideo} videos en book`,
                 `Carga de {maxVideo} videos en book`,
                 `Publicación de {maxHistory} historias al día`,
                 'Anuncio en promoción hasta por 30 días',
@@ -186,7 +199,7 @@ let RedisService = class RedisService {
                 'Asistencia telefónica en horario de oficina',
             ],
         };
-        const features = baseFeatures[planName] || [];
+        const features = baseFeatures[planName.toLowerCase()] || [];
         return features.map((feature) => feature
             .replace('{maxPhoto}', mediaLimit.photos.toString())
             .replace('{maxVideo}', mediaLimit.videos.toString())
@@ -194,23 +207,23 @@ let RedisService = class RedisService {
     }
     getMediaLimitForPlan(planName) {
         const limits = {
-            'Nebulosa': {
+            'nebulosa': {
                 photos: 4,
                 videos: 1,
                 history: 1,
             },
-            'Supernova': {
+            'supernova': {
                 photos: 3,
                 videos: 2,
                 history: 2,
             },
-            'Big Bang': {
+            'big-bang': {
                 photos: 18,
                 videos: 3,
                 history: 3,
             },
         };
-        return limits[planName] ?? { photos: 0, videos: 0, history: 0 };
+        return limits[planName.toLowerCase()] ?? { photos: 0, videos: 0, history: 0 };
     }
     async getAllKey() {
         try {
@@ -280,23 +293,23 @@ let RedisService = class RedisService {
     }
     getDefaultPriceDetails(planName) {
         const priceMap = {
-            'Nebulosa': [
+            'nebulosa': [
                 { label: '7 días', price: '$20.000', value: '7d' },
                 { label: '15 días', price: '$30.000', value: '15d' },
                 { label: '30 días', price: '$50.000', value: '30d' },
             ],
-            'Supernova': [
+            'supernova': [
                 { label: '7 días', price: '$50', value: '7d' },
                 { label: '15 días', price: '$90', value: '15d' },
                 { label: '30 días', price: '$150', value: '30d' },
             ],
-            'Big Bang': [
+            'big-bang': [
                 { label: '7 días', price: '$50', value: '7d' },
                 { label: '15 días', price: '$90', value: '15d' },
                 { label: '30 días', price: '$150', value: '30d' },
             ],
         };
-        return priceMap[planName] || [];
+        return priceMap[planName.toLowerCase()] || [];
     }
 };
 exports.RedisService = RedisService;

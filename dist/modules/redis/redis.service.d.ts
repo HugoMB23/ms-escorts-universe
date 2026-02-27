@@ -17,6 +17,7 @@ export declare class RedisService {
     getValueRedis(uuid: string, nick: string): Promise<ServiceResponse<any>>;
     getPlans(): Promise<any>;
     private buildPlanObject;
+    private formatPlanTitle;
     private getCategoryLabel;
     private getIconForPlan;
     private getFeaturesForPlan;

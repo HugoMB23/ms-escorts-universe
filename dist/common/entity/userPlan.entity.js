@@ -17,23 +17,23 @@ let UserPlanEntity = class UserPlanEntity {
 };
 exports.UserPlanEntity = UserPlanEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('increment', { name: 'id_user_plan' }),
+    (0, typeorm_1.PrimaryGeneratedColumn)('increment'),
     __metadata("design:type", Number)
 ], UserPlanEntity.prototype, "idUserPlan", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'user_uuid' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], UserPlanEntity.prototype, "userUuid", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'id_plan' }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], UserPlanEntity.prototype, "idPlan", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date', name: 'start_date' }),
+    (0, typeorm_1.Column)({ type: 'date' }),
     __metadata("design:type", String)
 ], UserPlanEntity.prototype, "startDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'date', nullable: true, name: 'end_date' }),
+    (0, typeorm_1.Column)({ type: 'date', nullable: true }),
     __metadata("design:type", String)
 ], UserPlanEntity.prototype, "endDate", void 0);
 __decorate([
@@ -42,7 +42,7 @@ __decorate([
 ], UserPlanEntity.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => plan_entity_1.PlanEntity),
-    (0, typeorm_1.JoinColumn)({ name: 'id_plan' }),
+    (0, typeorm_1.JoinColumn)({ name: 'idPlan' }),
     __metadata("design:type", plan_entity_1.PlanEntity)
 ], UserPlanEntity.prototype, "plan", void 0);
 exports.UserPlanEntity = UserPlanEntity = __decorate([

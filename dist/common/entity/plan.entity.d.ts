@@ -5,6 +5,7 @@ export declare class PlanEntity {
     name: string;
     description: string;
     price: number;
+    customPrice: any;
     userPlans: UserPlanEntity[];
     serviceCategoryPlans: ServiceCategoryPlanEntity[];
 }

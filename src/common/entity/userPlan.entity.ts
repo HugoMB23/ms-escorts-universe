@@ -4,25 +4,25 @@ import { PlanEntity } from './plan.entity';
 
 @Entity('user_plan')
 export class UserPlanEntity {
-  @PrimaryGeneratedColumn('increment', { name: 'id_user_plan' })
+  @PrimaryGeneratedColumn('increment')
   idUserPlan: number;
 
-  @Column({ name: 'user_uuid' })
+  @Column()
   userUuid: string;
 
-  @Column({ name: 'id_plan' })
+  @Column()
   idPlan: number;
 
-  @Column({ type: 'date', name: 'start_date' })
+  @Column({ type: 'date' })
   startDate: string;
 
-  @Column({ type: 'date', nullable: true, name: 'end_date' })
+  @Column({ type: 'date', nullable: true })
   endDate: string;
 
   @ManyToOne(() => UserEntity, (user) => user.userPlans, { nullable: false })
   user: UserEntity;
 
   @ManyToOne(() => PlanEntity)
-  @JoinColumn({ name: 'id_plan' })
+  @JoinColumn({ name: 'idPlan' })
   plan: PlanEntity;
 }
