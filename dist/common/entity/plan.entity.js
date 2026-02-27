@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlanEntity = void 0;
 const typeorm_1 = require("typeorm");
 const userPlan_entity_1 = require("./userPlan.entity");
-const planCategory_entity_1 = require("./planCategory.entity");
+const service_category_plan_entity_1 = require("./service-category-plan.entity");
 let PlanEntity = class PlanEntity {
 };
 exports.PlanEntity = PlanEntity;
@@ -29,22 +29,17 @@ __decorate([
     __metadata("design:type", String)
 ], PlanEntity.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'numeric' }),
+    (0, typeorm_1.Column)({ type: 'numeric', nullable: true }),
     __metadata("design:type", Number)
 ], PlanEntity.prototype, "price", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
-    __metadata("design:type", Number)
-], PlanEntity.prototype, "idCategory", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => planCategory_entity_1.PlanCategoryEntity, (category) => category.plans, { nullable: false }),
-    (0, typeorm_1.JoinColumn)({ name: 'idCategory' }),
-    __metadata("design:type", planCategory_entity_1.PlanCategoryEntity)
-], PlanEntity.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => userPlan_entity_1.UserPlanEntity, (userPlan) => userPlan.plan),
     __metadata("design:type", Array)
 ], PlanEntity.prototype, "userPlans", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => service_category_plan_entity_1.ServiceCategoryPlanEntity, (serviceCategoryPlan) => serviceCategoryPlan.plan),
+    __metadata("design:type", Array)
+], PlanEntity.prototype, "serviceCategoryPlans", void 0);
 exports.PlanEntity = PlanEntity = __decorate([
     (0, typeorm_1.Entity)('plan')
 ], PlanEntity);

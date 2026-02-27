@@ -17,6 +17,7 @@ import { AvatarService } from './modules/avatar/avatar.service';
 import { AvatarModule } from './modules/avatar/avatar.module';
 import { CoverModule } from './modules/cover/cover.module';
 import { MailModule } from './modules/mail/mail.module';
+import { CouponModule } from './modules/coupon/coupon.module';
 
 @Module({
   imports: [
@@ -55,7 +56,8 @@ import { MailModule } from './modules/mail/mail.module';
     VideoModule,
     AvatarModule,
     CoverModule,
-    MailModule
+    MailModule,
+    CouponModule,
   ],
   controllers: [AppController],
   providers: [AppService, AvatarService],

@@ -15,6 +15,9 @@ const config_1 = require("@nestjs/config");
 const ioredis_1 = require("ioredis");
 const typeorm_1 = require("@nestjs/typeorm");
 const plans_config_entity_1 = require("../../common/entity/plans.config.entity");
+const plan_entity_1 = require("../../common/entity/plan.entity");
+const service_category_entity_1 = require("../../common/entity/service-category.entity");
+const service_category_plan_entity_1 = require("../../common/entity/service-category-plan.entity");
 let RedisModule = class RedisModule {
 };
 exports.RedisModule = RedisModule;
@@ -22,7 +25,10 @@ exports.RedisModule = RedisModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule,
             typeorm_1.TypeOrmModule.forFeature([
-                plans_config_entity_1.PlansConfigEntity
+                plans_config_entity_1.PlansConfigEntity,
+                plan_entity_1.PlanEntity,
+                service_category_entity_1.ServiceCategoryEntity,
+                service_category_plan_entity_1.ServiceCategoryPlanEntity
             ]),
         ],
         providers: [

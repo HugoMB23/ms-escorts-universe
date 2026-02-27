@@ -10,11 +10,13 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { JwtStrategy } from '../../guards/jwt.strategy';
 import { UserPlanEntity } from '../../common/entity/userPlan.entity';
 import { PlanEntity } from 'src/common/entity/plan.entity';
-import { PlanCategoryEntity } from 'src/common/entity/planCategory.entity';
+import { ServiceCategoryEntity } from 'src/common/entity/service-category.entity';
+import { ServiceCategoryPlanEntity } from 'src/common/entity/service-category-plan.entity';
 import { ProfileEntity } from 'src/common/entity/profile.entity';
 import { ApiKeyMiddleware } from '../../middlewares/api-key.middleware';
 import { MailService } from '../mail/mail.service';
 import { RegistrationDocsModule } from '../registration-docs/registration-docs.module';
+
 
 
 
@@ -25,10 +27,9 @@ import { RegistrationDocsModule } from '../registration-docs/registration-docs.m
       UserEntity,
       UserPlanEntity,
       PlanEntity,
-      PlanCategoryEntity,
+      ServiceCategoryEntity,
+      ServiceCategoryPlanEntity,
       ProfileEntity,
-
-      
     ]),
     JwtModule.register({
       global: true,

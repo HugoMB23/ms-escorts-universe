@@ -79,8 +79,8 @@ export class ProfileService {
   
     const plan = profile.user?.userPlans?.[0]?.plan;
     const planName = plan?.name || 'No Plan Assigned';
-    const idCategory = plan?.idCategory || null;
-    const categoryName = plan?.category?.name || 'No Category Assigned';
+    // NOTE: idCategory y category fueron removidos. Los planes ahora son simples (sin categorías).
+    // Las categorías de servicio se manejan a través de ServiceCategoryPlanEntity
 
   
     const profileData = {
@@ -92,8 +92,6 @@ export class ProfileService {
         nick: profile.user?.nick,
         birthDate: profile.user?.birthDate,
         plan: planName,
-        categoryName: categoryName,
-        idCategory: idCategory,
         characteristics: {
           nationality: profile.nationality,
           height: profile.height,
@@ -112,7 +110,7 @@ export class ProfileService {
           hairColor: profile.hairColor,
         },
         listService: profile.listService || [],
-        listAdditionalService: profile.listService || [], // Asumiendo que listAdditionalService es igual a listService por ahora
+        listAdditionalService: profile.listService || [],
       },
     };
 

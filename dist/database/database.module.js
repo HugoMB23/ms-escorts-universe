@@ -25,7 +25,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                 password: process.env.POSTGRES_PASSWORD,
                 database: process.env.POSTGRES_DATABASE,
                 ssl: process.env.POSTGRES_SSL === 'true' ? { rejectUnauthorized: false } : false,
-                autoLoadEntities: true
+                autoLoadEntities: true,
             }),
         ]
     })

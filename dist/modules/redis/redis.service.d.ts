@@ -1,18 +1,30 @@
 import { Cache } from 'cache-manager';
 import { ServiceResponse } from '../../interfaces/response.interface';
 import { PlansConfigEntity } from '../../common/entity/plans.config.entity';
+import { PlanEntity } from '../../common/entity/plan.entity';
+import { ServiceCategoryEntity } from '../../common/entity/service-category.entity';
+import { ServiceCategoryPlanEntity } from '../../common/entity/service-category-plan.entity';
 import { Repository } from 'typeorm';
 import Redis from 'ioredis';
 export declare class RedisService {
     private plansRepository;
+    private planRepository;
+    private serviceCategoryRepository;
+    private serviceCategoryPlanRepository;
     private cacheManager;
     private readonly redis;
-    constructor(plansRepository: Repository<PlansConfigEntity>, cacheManager: Cache, redis: Redis);
+    constructor(plansRepository: Repository<PlansConfigEntity>, planRepository: Repository<PlanEntity>, serviceCategoryRepository: Repository<ServiceCategoryEntity>, serviceCategoryPlanRepository: Repository<ServiceCategoryPlanEntity>, cacheManager: Cache, redis: Redis);
     getValueRedis(uuid: string, nick: string): Promise<ServiceResponse<any>>;
     getPlans(): Promise<any>;
+    private buildPlanObject;
+    private getCategoryLabel;
+    private getIconForPlan;
+    private getFeaturesForPlan;
+    private getMediaLimitForPlan;
     getAllKey(): Promise<ServiceResponse<any>>;
     updateValueRedis(uuid: string, nick: string, data: any): Promise<ServiceResponse<void>>;
     deleteKey(key: string): Promise<void>;
     getProfile(key: string): Promise<ServiceResponse<any>>;
     setProfileInRedis(key: string, profileData: any): Promise<void>;
+    private getDefaultPriceDetails;
 }

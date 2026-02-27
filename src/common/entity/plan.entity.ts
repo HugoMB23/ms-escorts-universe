@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { UserPlanEntity } from './userPlan.entity'; // Ajusta la ruta según sea necesario
-import { PlanCategoryEntity } from './planCategory.entity'; // Ajusta la ruta según sea necesario
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserPlanEntity } from './userPlan.entity';
+import { ServiceCategoryPlanEntity } from './service-category-plan.entity';
 
 @Entity('plan')
 export class PlanEntity {
@@ -13,16 +13,28 @@ export class PlanEntity {
   @Column({ type: 'varchar' })
   description: string;
 
-  @Column({ type: 'numeric' })
+  @Column({ type: 'numeric', nullable: true })
   price: number;
 
-  @Column({ type: 'int' })
-  idCategory: number; // Mantén esta columna
-
-  @ManyToOne(() => PlanCategoryEntity, (category) => category.plans, { nullable: false })
-  @JoinColumn({ name: 'idCategory' }) // Especifica que esta columna es la clave foránea
-  category: PlanCategoryEntity; // Relación ManyToOne con PlanCategoryEntity
+  // Estas columnas se agregarán ejecutando las queries SQL
+  // @Column({ type: 'varchar', nullable: true })
+  // icon: string;
+  
+  // @Column({ type: 'jsonb', nullable: true })
+  // priceDetails: any;
+  
+  // @Column({ type: 'jsonb', nullable: true })
+  // customPrice: any;
+  
+  // @Column({ type: 'jsonb', nullable: true })
+  // features: string[];
 
   @OneToMany(() => UserPlanEntity, (userPlan) => userPlan.plan)
-  userPlans: UserPlanEntity[]; // Relación OneToMany con UserPlanEntity
+  userPlans: UserPlanEntity[];
+
+  @OneToMany(
+    () => ServiceCategoryPlanEntity,
+    (serviceCategoryPlan) => serviceCategoryPlan.plan,
+  )
+  serviceCategoryPlans: ServiceCategoryPlanEntity[];
 }

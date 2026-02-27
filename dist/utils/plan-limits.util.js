@@ -3,28 +3,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolveMediaLimit = resolveMediaLimit;
 const common_1 = require("@nestjs/common");
 const response_enums_1 = require("../enum/response.enums");
-function resolveMediaLimit(plansUniverse, planOrId, mediaType = 'photos', categoryValue) {
-    if (!Array.isArray(plansUniverse)) {
-        throw new common_1.HttpException({ status: response_enums_1.ResponseStatus.BAD_REQUEST, error: 'Invalid plans config format' }, response_enums_1.ResponseStatus.BAD_REQUEST);
+function resolveMediaLimit(plansUniverse, planName, mediaType = 'photos') {
+    if (!plansUniverse || typeof plansUniverse !== 'object') {
+        throw new common_1.HttpException({
+            status: response_enums_1.ResponseStatus.BAD_REQUEST,
+            error: 'Invalid plans config format. Expected object with plan names as keys.'
+        }, response_enums_1.ResponseStatus.BAD_REQUEST);
     }
-    const categories = categoryValue
-        ? plansUniverse.filter((c) => c?.value === categoryValue)
-        : plansUniverse;
-    for (const cat of categories) {
-        const byId = cat?.plans?.find((p) => p?.id === planOrId);
-        const byTitle = cat?.plans?.find((p) => (p?.title || '').toLowerCase() === (planOrId || '').toLowerCase());
-        const found = byId || byTitle;
-        if (found) {
-            const limit = found?.mediaLimit?.[mediaType];
-            if (typeof limit !== 'number') {
-                throw new common_1.HttpException({
-                    status: response_enums_1.ResponseStatus.BAD_REQUEST,
-                    error: `Missing mediaLimit.${mediaType} for plan ${found?.id || found?.title}`,
-                }, response_enums_1.ResponseStatus.BAD_REQUEST);
-            }
-            return { maxAllowed: limit, resolvedPlanId: found?.id || found?.title };
-        }
+    const resolvedPlanName = planName || 'Nebulosa';
+    const planLimits = plansUniverse[resolvedPlanName];
+    if (!planLimits) {
+        throw new common_1.HttpException({
+            status: response_enums_1.ResponseStatus.NOT_FOUND,
+            error: `Plan "${resolvedPlanName}" not found. Available plans: ${Object.keys(plansUniverse).join(', ')}`
+        }, response_enums_1.ResponseStatus.NOT_FOUND);
     }
-    throw new common_1.HttpException({ status: response_enums_1.ResponseStatus.NOT_FOUND, error: `Plan ${planOrId} not found` }, response_enums_1.ResponseStatus.NOT_FOUND);
+    const limit = planLimits[mediaType];
+    if (typeof limit !== 'number' || limit < 0) {
+        throw new common_1.HttpException({
+            status: response_enums_1.ResponseStatus.BAD_REQUEST,
+            error: `Missing or invalid mediaLimit.${mediaType} for plan "${resolvedPlanName}"`,
+        }, response_enums_1.ResponseStatus.BAD_REQUEST);
+    }
+    return { maxAllowed: limit, resolvedPlanId: resolvedPlanName };
 }
 //# sourceMappingURL=plan-limits.util.js.map

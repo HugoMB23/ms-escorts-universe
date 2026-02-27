@@ -19,7 +19,8 @@ const throttler_1 = require("@nestjs/throttler");
 const jwt_strategy_1 = require("../../guards/jwt.strategy");
 const userPlan_entity_1 = require("../../common/entity/userPlan.entity");
 const plan_entity_1 = require("../../common/entity/plan.entity");
-const planCategory_entity_1 = require("../../common/entity/planCategory.entity");
+const service_category_entity_1 = require("../../common/entity/service-category.entity");
+const service_category_plan_entity_1 = require("../../common/entity/service-category-plan.entity");
 const profile_entity_1 = require("../../common/entity/profile.entity");
 const api_key_middleware_1 = require("../../middlewares/api-key.middleware");
 const mail_service_1 = require("../mail/mail.service");
@@ -39,7 +40,8 @@ exports.AuthModule = AuthModule = __decorate([
                 user_entity_1.UserEntity,
                 userPlan_entity_1.UserPlanEntity,
                 plan_entity_1.PlanEntity,
-                planCategory_entity_1.PlanCategoryEntity,
+                service_category_entity_1.ServiceCategoryEntity,
+                service_category_plan_entity_1.ServiceCategoryPlanEntity,
                 profile_entity_1.ProfileEntity,
             ]),
             jwt_1.JwtModule.register({

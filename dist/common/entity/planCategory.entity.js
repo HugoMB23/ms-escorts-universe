@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlanCategoryEntity = void 0;
 const typeorm_1 = require("typeorm");
-const plan_entity_1 = require("./plan.entity");
 let PlanCategoryEntity = class PlanCategoryEntity {
 };
 exports.PlanCategoryEntity = PlanCategoryEntity;
@@ -27,10 +26,6 @@ __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], PlanCategoryEntity.prototype, "description", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => plan_entity_1.PlanEntity, (plan) => plan.category),
-    __metadata("design:type", Array)
-], PlanCategoryEntity.prototype, "plans", void 0);
 exports.PlanCategoryEntity = PlanCategoryEntity = __decorate([
     (0, typeorm_1.Entity)('plan_category')
 ], PlanCategoryEntity);

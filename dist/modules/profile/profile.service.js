@@ -61,8 +61,6 @@ let ProfileService = class ProfileService {
         }
         const plan = profile.user?.userPlans?.[0]?.plan;
         const planName = plan?.name || 'No Plan Assigned';
-        const idCategory = plan?.idCategory || null;
-        const categoryName = plan?.category?.name || 'No Category Assigned';
         const profileData = {
             statusCode: 201,
             message: 'Perfil encontrado pg',
@@ -72,8 +70,6 @@ let ProfileService = class ProfileService {
                 nick: profile.user?.nick,
                 birthDate: profile.user?.birthDate,
                 plan: planName,
-                categoryName: categoryName,
-                idCategory: idCategory,
                 characteristics: {
                     nationality: profile.nationality,
                     height: profile.height,

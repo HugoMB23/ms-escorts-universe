@@ -6,11 +6,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlansConfigEntity } from '../../common/entity/plans.config.entity';
+import { PlanEntity } from '../../common/entity/plan.entity';
+import { ServiceCategoryEntity } from '../../common/entity/service-category.entity';
+import { ServiceCategoryPlanEntity } from '../../common/entity/service-category-plan.entity';
 
 @Module({
   imports: [ConfigModule,
      TypeOrmModule.forFeature([
-          PlansConfigEntity
+          PlansConfigEntity,
+          PlanEntity,
+          ServiceCategoryEntity,
+          ServiceCategoryPlanEntity
         ]),
   ],
   providers: [

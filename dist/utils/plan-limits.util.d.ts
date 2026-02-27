@@ -1,4 +1,4 @@
-export declare function resolveMediaLimit(plansUniverse: any[], planOrId?: string, mediaType?: 'photos' | 'videos' | 'history', categoryValue?: string): {
+export declare function resolveMediaLimit(plansUniverse: any, planName?: string, mediaType?: 'photos' | 'videos' | 'history'): {
     maxAllowed: number;
-    resolvedPlanId: any;
+    resolvedPlanId: string;
 };
