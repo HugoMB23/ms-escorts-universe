@@ -44,7 +44,10 @@ export declare class AuthController {
     registerPublicV1(bodyRaw: any, files: {
         [fieldname: string]: Express.Multer.File[];
     }): Promise<{
-        data: {};
+        data: {
+            user: string;
+            urlPayment: any;
+        };
         statusCode: import("../../enum/response.enums").ResponseStatus;
         message: import("../../enum/response.enums").ResponseMessage;
     }>;

@@ -6,6 +6,9 @@ export declare class PlanEntity {
     description: string;
     price: number;
     customPrice: any;
+    icon: string;
+    priceDetails: any;
+    features: any;
     userPlans: UserPlanEntity[];
     serviceCategoryPlans: ServiceCategoryPlanEntity[];
 }

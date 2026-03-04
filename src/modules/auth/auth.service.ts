@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto,CreateProfilPublicDto } from '../../common/dto/auth-create.dto';
 import { UserEntity } from '../../common/entity/user.entity';
@@ -15,6 +15,7 @@ import { ProfileEntity } from '../../common/entity/profile.entity';
 import { CreateProfileDto } from '../../common/dto/profile-create.dto';
 import { RegisterPublicV1Dto } from './dto/registerPublicV1.dto'
 import { RegistrationDocsService } from '../registration-docs/registration-docs.service';
+import { PaymentsService } from '../payments/payments.service';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +27,7 @@ export class AuthService {
     private jwtService: JwtService,
     private mailerService: MailService,
     private registrationDocsService: RegistrationDocsService,
+    private paymentsService: PaymentsService,
   ) {}
 
   async createAccountUser(userData: CreateUserDto) {
@@ -156,8 +158,54 @@ export class AuthService {
         }
       }
 
+      // Generate payment URL for registration plan
+      // Frontend sends planId (e.g., 'escort-supernova') and priceDays (e.g., '30d') from step1
+      // Backend calculates the amount from plan.priceDetails
+      let paymentUrl = null;
+      try {
+        const planName = userPublicData.step1.planId; // e.g., 'escort-supernova'
+        const priceDaysStr = userPublicData.step1.priceDays; // e.g., '30d'
+
+        // Parse priceDays: "7d" → 7, "15d" → 15, "30d" → 30
+        const planDays = parseInt(priceDaysStr, 10);
+        if (!planDays || ![7, 15, 30].includes(planDays)) {
+          throw new BadRequestException(
+            `Invalid priceDays: ${priceDaysStr}. Must be '7d', '15d', or '30d'`,
+          );
+        }
+
+        // Backend calculates amount from plan.priceDetails (prevents frontend price manipulation)
+        const { amount } = await this.paymentsService.calculatePaymentAmount(planName, planDays);
+
+        const checkoutResponse = await this.paymentsService.createCheckout(
+          createdUser.uuid,
+          {
+            externalReference: createdUser.uuid,
+            amount,
+            currency: 'CLP',
+            description: `Registration Plan - ${planName}`,
+            provider: 'mercadopago',
+            planName, // ← Pass plan name for webhook
+            planDays, // ← Pass duration for webhook
+            metadata: {
+              type: 'registration',
+              registrationStep: 'payment',
+              planName,
+              planDays,
+            },
+          },
+        );
+        paymentUrl = checkoutResponse.initPoint;
+      } catch (error) {
+        console.warn('Warning: Failed to generate payment URL', error);
+        // Non-blocking: registration succeeds even if payment URL generation fails
+      }
+
       return {
-        data: {},
+        data: {
+          user: createdUser.uuid,
+          urlPayment: paymentUrl || null,
+        },
         statusCode: ResponseStatus.SUCCESS,
         message: ResponseMessage.ACCOUNT_CREATED,
       };

@@ -2,7 +2,7 @@ declare class Step1Dto {
     regionType: string;
     userType: string;
     priceDays: string;
-    planId?: string;
+    planId: string;
 }
 declare class Step2Dto {
     address: string;

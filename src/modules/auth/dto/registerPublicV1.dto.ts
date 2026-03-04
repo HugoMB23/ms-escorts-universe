@@ -22,11 +22,11 @@ class Step1Dto {
 
   @IsNotEmpty()
   @IsString()
-  priceDays: string;
+  priceDays: string; // Format: "7d", "15d", "30d"
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  planId?: string;
+  planId: string; // Format: "escort-supernova", "escort-nebulosa", etc.
 }
 
 class Step2Dto {

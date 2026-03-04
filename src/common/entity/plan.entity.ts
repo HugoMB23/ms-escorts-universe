@@ -19,15 +19,14 @@ export class PlanEntity {
   @Column({ type: 'jsonb', nullable: true })
   customPrice: any; // Precios especiales por región
 
-  // Estas columnas se agregarán ejecutando las queries SQL
-  // @Column({ type: 'varchar', nullable: true })
-  // icon: string;
-  
-  // @Column({ type: 'jsonb', nullable: true })
-  // priceDetails: any;
-  
-  // @Column({ type: 'jsonb', nullable: true })
-  // features: string[];
+  @Column({ type: 'varchar', nullable: true })
+  icon: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  priceDetails: any; // [{ label: "7 días", price: "$50.000", value: "7d" }, ...]
+
+  @Column({ type: 'jsonb', nullable: true })
+  features: any; // Array de features del plan
 
   @OneToMany(() => UserPlanEntity, (userPlan) => userPlan.plan)
   userPlans: UserPlanEntity[];

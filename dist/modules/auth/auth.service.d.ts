@@ -9,13 +9,15 @@ import { ProfileEntity } from '../../common/entity/profile.entity';
 import { CreateProfileDto } from '../../common/dto/profile-create.dto';
 import { RegisterPublicV1Dto } from './dto/registerPublicV1.dto';
 import { RegistrationDocsService } from '../registration-docs/registration-docs.service';
+import { PaymentsService } from '../payments/payments.service';
 export declare class AuthService {
     private userRepository;
     private readonly profileRepository;
     private jwtService;
     private mailerService;
     private registrationDocsService;
-    constructor(userRepository: Repository<UserEntity>, profileRepository: Repository<ProfileEntity>, jwtService: JwtService, mailerService: MailService, registrationDocsService: RegistrationDocsService);
+    private paymentsService;
+    constructor(userRepository: Repository<UserEntity>, profileRepository: Repository<ProfileEntity>, jwtService: JwtService, mailerService: MailService, registrationDocsService: RegistrationDocsService, paymentsService: PaymentsService);
     createAccountUser(userData: CreateUserDto): Promise<{
         data: {};
         statusCode: ResponseStatus;
@@ -24,7 +26,10 @@ export declare class AuthService {
     createAccountUserPublicv1(userPublicData: RegisterPublicV1Dto, files?: {
         [fieldname: string]: Express.Multer.File[];
     }): Promise<{
-        data: {};
+        data: {
+            user: string;
+            urlPayment: any;
+        };
         statusCode: ResponseStatus;
         message: ResponseMessage;
     }>;

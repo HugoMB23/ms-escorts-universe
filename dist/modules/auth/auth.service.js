@@ -26,13 +26,15 @@ const mail_service_1 = require("../mail/mail.service");
 const luxon_1 = require("luxon");
 const profile_entity_1 = require("../../common/entity/profile.entity");
 const registration_docs_service_1 = require("../registration-docs/registration-docs.service");
+const payments_service_1 = require("../payments/payments.service");
 let AuthService = class AuthService {
-    constructor(userRepository, profileRepository, jwtService, mailerService, registrationDocsService) {
+    constructor(userRepository, profileRepository, jwtService, mailerService, registrationDocsService, paymentsService) {
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.jwtService = jwtService;
         this.mailerService = mailerService;
         this.registrationDocsService = registrationDocsService;
+        this.paymentsService = paymentsService;
     }
     async createAccountUser(userData) {
         const exist = await this.findUser(userData.email);
@@ -140,8 +142,40 @@ let AuthService = class AuthService {
                     console.warn('Warning: Failed to upload registration documents', error);
                 }
             }
+            let paymentUrl = null;
+            try {
+                const planName = userPublicData.step1.planId;
+                const priceDaysStr = userPublicData.step1.priceDays;
+                const planDays = parseInt(priceDaysStr, 10);
+                if (!planDays || ![7, 15, 30].includes(planDays)) {
+                    throw new common_1.BadRequestException(`Invalid priceDays: ${priceDaysStr}. Must be '7d', '15d', or '30d'`);
+                }
+                const { amount } = await this.paymentsService.calculatePaymentAmount(planName, planDays);
+                const checkoutResponse = await this.paymentsService.createCheckout(createdUser.uuid, {
+                    externalReference: createdUser.uuid,
+                    amount,
+                    currency: 'CLP',
+                    description: `Registration Plan - ${planName}`,
+                    provider: 'mercadopago',
+                    planName,
+                    planDays,
+                    metadata: {
+                        type: 'registration',
+                        registrationStep: 'payment',
+                        planName,
+                        planDays,
+                    },
+                });
+                paymentUrl = checkoutResponse.initPoint;
+            }
+            catch (error) {
+                console.warn('Warning: Failed to generate payment URL', error);
+            }
             return {
-                data: {},
+                data: {
+                    user: createdUser.uuid,
+                    urlPayment: paymentUrl || null,
+                },
                 statusCode: response_enums_1.ResponseStatus.SUCCESS,
                 message: response_enums_1.ResponseMessage.ACCOUNT_CREATED,
             };
@@ -368,6 +402,7 @@ exports.AuthService = AuthService = __decorate([
         typeorm_2.Repository,
         jwt_1.JwtService,
         mail_service_1.MailService,
-        registration_docs_service_1.RegistrationDocsService])
+        registration_docs_service_1.RegistrationDocsService,
+        payments_service_1.PaymentsService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

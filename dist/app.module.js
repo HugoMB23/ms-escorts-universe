@@ -27,6 +27,7 @@ const avatar_module_1 = require("./modules/avatar/avatar.module");
 const cover_module_1 = require("./modules/cover/cover.module");
 const mail_module_1 = require("./modules/mail/mail.module");
 const coupon_module_1 = require("./modules/coupon/coupon.module");
+const payments_module_1 = require("./modules/payments/payments.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -66,6 +67,7 @@ exports.AppModule = AppModule = __decorate([
             cover_module_1.CoverModule,
             mail_module_1.MailModule,
             coupon_module_1.CouponModule,
+            payments_module_1.PaymentsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, avatar_service_1.AvatarService],

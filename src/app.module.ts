@@ -18,6 +18,7 @@ import { AvatarModule } from './modules/avatar/avatar.module';
 import { CoverModule } from './modules/cover/cover.module';
 import { MailModule } from './modules/mail/mail.module';
 import { CouponModule } from './modules/coupon/coupon.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { CouponModule } from './modules/coupon/coupon.module';
     CoverModule,
     MailModule,
     CouponModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AvatarService],
