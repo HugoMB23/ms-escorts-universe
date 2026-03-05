@@ -34,6 +34,27 @@ export declare class PaymentsController {
         amount: number;
         currency: string;
     }>;
+    handlePaymentSuccess(query: any): Promise<{
+        ok: boolean;
+        message: string;
+        preferenceId: any;
+        paymentId: any;
+        externalReference: any;
+    }>;
+    handlePaymentPending(query: any): Promise<{
+        ok: boolean;
+        message: string;
+        preferenceId: any;
+        paymentId: any;
+        externalReference: any;
+    }>;
+    handlePaymentFailure(query: any): Promise<{
+        ok: boolean;
+        message: string;
+        preferenceId: any;
+        paymentId: any;
+        externalReference: any;
+    }>;
     generateTestPaymentUrl(body: any): Promise<{
         ok: boolean;
         message: string;

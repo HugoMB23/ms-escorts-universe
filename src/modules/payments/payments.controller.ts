@@ -112,6 +112,54 @@ export class PaymentsController {
   }
 
   /**
+   * Handle successful payment redirect from MercadoPago
+   * GET /payments/mercadopago/return/success
+   */
+  @Get('mercadopago/return/success')
+  async handlePaymentSuccess(@Query() query: any) {
+    this.logger.log('✅ Payment success redirect received', query);
+    return {
+      ok: true,
+      message: 'Payment completed successfully',
+      preferenceId: query.preference_id,
+      paymentId: query.payment_id,
+      externalReference: query.external_reference,
+    };
+  }
+
+  /**
+   * Handle pending payment redirect from MercadoPago
+   * GET /payments/mercadopago/return/pending
+   */
+  @Get('mercadopago/return/pending')
+  async handlePaymentPending(@Query() query: any) {
+    this.logger.log('⏳ Payment pending redirect received', query);
+    return {
+      ok: true,
+      message: 'Payment is pending',
+      preferenceId: query.preference_id,
+      paymentId: query.payment_id,
+      externalReference: query.external_reference,
+    };
+  }
+
+  /**
+   * Handle failed payment redirect from MercadoPago
+   * GET /payments/mercadopago/return/failure
+   */
+  @Get('mercadopago/return/failure')
+  async handlePaymentFailure(@Query() query: any) {
+    this.logger.log('❌ Payment failure redirect received', query);
+    return {
+      ok: false,
+      message: 'Payment failed or was rejected',
+      preferenceId: query.preference_id,
+      paymentId: query.payment_id,
+      externalReference: query.external_reference,
+    };
+  }
+
+  /**
    * Generate test payment URL to validate credentials
    * POST /payments/test/generate-url
    * No auth required - only for testing

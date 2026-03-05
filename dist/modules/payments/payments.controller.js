@@ -60,6 +60,36 @@ let PaymentsController = PaymentsController_1 = class PaymentsController {
     async verifyPaymentStatus(paymentId) {
         return this.paymentsService.verifyPaymentStatus(paymentId);
     }
+    async handlePaymentSuccess(query) {
+        this.logger.log('✅ Payment success redirect received', query);
+        return {
+            ok: true,
+            message: 'Payment completed successfully',
+            preferenceId: query.preference_id,
+            paymentId: query.payment_id,
+            externalReference: query.external_reference,
+        };
+    }
+    async handlePaymentPending(query) {
+        this.logger.log('⏳ Payment pending redirect received', query);
+        return {
+            ok: true,
+            message: 'Payment is pending',
+            preferenceId: query.preference_id,
+            paymentId: query.payment_id,
+            externalReference: query.external_reference,
+        };
+    }
+    async handlePaymentFailure(query) {
+        this.logger.log('❌ Payment failure redirect received', query);
+        return {
+            ok: false,
+            message: 'Payment failed or was rejected',
+            preferenceId: query.preference_id,
+            paymentId: query.payment_id,
+            externalReference: query.external_reference,
+        };
+    }
     async generateTestPaymentUrl(body) {
         this.logger.log('🧪 TEST: Generating test payment URL');
         const amount = body?.amount ?? 50000;
@@ -149,6 +179,27 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PaymentsController.prototype, "verifyPaymentStatus", null);
+__decorate([
+    (0, common_1.Get)('mercadopago/return/success'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "handlePaymentSuccess", null);
+__decorate([
+    (0, common_1.Get)('mercadopago/return/pending'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "handlePaymentPending", null);
+__decorate([
+    (0, common_1.Get)('mercadopago/return/failure'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PaymentsController.prototype, "handlePaymentFailure", null);
 __decorate([
     (0, common_1.Post)('test/generate-url'),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),

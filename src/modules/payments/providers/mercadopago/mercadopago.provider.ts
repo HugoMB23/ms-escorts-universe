@@ -37,9 +37,9 @@ export class MercadoPagoProvider implements IPaymentProvider {
       external_reference: params.externalReference,
       notification_url: `${publicUrl}/payments/webhook/mercadopago`,
       back_urls: {
-        success: `${publicUrl}/payments/return/success`,
-        pending: `${publicUrl}/payments/return/pending`,
-        failure: `${publicUrl}/payments/return/failure`,
+        success: `${publicUrl}/payments/mercadopago/return/success`,
+        pending: `${publicUrl}/payments/mercadopago/return/pending`,
+        failure: `${publicUrl}/payments/mercadopago/return/failure`,
       },
       auto_return: 'approved',
       metadata: params.metadata,
